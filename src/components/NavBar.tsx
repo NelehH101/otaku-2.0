@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Added useLocation
 import { Menu, X } from 'lucide-react';
 
 const NavBar = () => {
     const [isShrunk, setIsShrunk] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const location = useLocation(); // Hook to get current path
 
     // --- LOGO HOVER LOGIC ---
     const logoImages = [
@@ -28,7 +29,6 @@ const NavBar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Prevent scrolling when mobile menu is open
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -39,17 +39,14 @@ const NavBar = () => {
 
     return (
         <>
-            {/* FIXED: Added right-0 to balance the centering container */}
             <nav className="fixed top-6 left-0 right-0 w-full flex justify-center z-[100] transition-all duration-500 px-4">
                 <div className={`
                     flex items-center justify-between px-6 transition-all duration-500 ease-in-out rounded-full border
                     backdrop-blur-xl border-white/0 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]
                     mx-auto
-                    
                     ${!isShrunk ? 'w-full md:w-[95%] py-6 bg-white/10 text-white' : 'bg-zinc-900/40 text-white'}
                     ${isShrunk ? 'w-[300px] md:w-[700px] py-4 md:py-6' : ''}
                     ${isShrunk ? 'hover:md:w-[90%] hover:py-6 hover:bg-white/20' : ''}
-                    
                     group
                 `}>
 
@@ -64,7 +61,7 @@ const NavBar = () => {
                         />
                     </Link>
 
-                    {/* Desktop Links */}
+                    {/* Desktop Links (No highlight here, as per your request) */}
                     <div className={`
                         hidden md:flex items-center gap-6 text-[18px] font-regular transition-all duration-300
                         ${isShrunk ? 'opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto' : 'opacity-100'}
@@ -72,6 +69,7 @@ const NavBar = () => {
                         <Link to="/shop" className="hover:opacity-60">Products</Link>
                         <Link to="/lookbook" className="hover:opacity-60">LookBook</Link>
                         <Link to="/about" className="hover:opacity-60">About</Link>
+                        <Link to="/trackorders" className="hover:opacity-60">Track Orders</Link>
                     </div>
 
                     {/* Right Side Actions */}
@@ -80,7 +78,6 @@ const NavBar = () => {
                             Contact
                         </button>
 
-                        {/* Mobile Toggle Button */}
                         <button 
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -97,24 +94,31 @@ const NavBar = () => {
 
             {/* Mobile Menu Overlay */}
             <div className={`
-                fixed inset-0 z-[95] bg-black/98 backdrop-blur-2xl transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8
+                fixed inset-0 z-[95] bg-white/5 backdrop-blur-2xl transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8
                 ${isMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-full'}
             `}>
                 {[
                     { name: 'Products', path: '/shop' },
                     { name: 'LookBook', path: '/lookbook' },
                     { name: 'About', path: '/about' },
-                    { name: 'Contact', path: '/contact' }
-                ].map((item) => (
-                    <Link
-                        key={item.name}
-                        to={item.path}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="text-5xl font-black italic uppercase tracking-tighter text-white hover:text-orange-500 transition-colors"
-                    >
-                        {item.name}
-                    </Link>
-                ))}
+                    { name: 'Track Orders', path: '/trackorders' },
+                ].map((item) => {
+                    // Check if current route matches this link
+                    const isActive = location.pathname === item.path;
+
+                    return (
+                        <Link
+                            key={item.name}
+                            to={item.path}
+                            onClick={() => setIsMenuOpen(false)}
+                            className={`text-5xl font-black italic uppercase tracking-tighter transition-all duration-300 
+                                ${isActive ? 'text-orange-500 scale-110' : 'text-white hover:text-orange-500'}
+                            `}
+                        >
+                            {item.name}
+                        </Link>
+                    );
+                })}
             </div>
         </>
     );

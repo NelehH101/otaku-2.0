@@ -15,7 +15,7 @@ const FooterSlider = () => {
   const duplicatedImages = [...images, ...images];
 
   return (
-    <div className="relative w-full overflow-hidden bg-black py-10 ">
+    <div className="relative w-full overflow-hidden bg-black py-10">
       <motion.div
         className="flex gap-4 px-4"
         animate={{
@@ -35,10 +35,14 @@ const FooterSlider = () => {
             <img
               src={src}
               alt={`Gallery ${index}`}
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
+              /* MOBILE: grayscale-0 (Full Color). 
+                 DESKTOP: md:grayscale, group-hover:grayscale-0. 
+              */
+              className="w-full h-full object-cover transition-all duration-700 grayscale-0 md:grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100"
             />
-            {/* Street Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            {/* STREET OVERLAYS: Hidden on mobile, shown on desktop hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent hidden md:block md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
         ))}
       </motion.div>

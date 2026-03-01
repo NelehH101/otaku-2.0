@@ -46,10 +46,10 @@ const AboutPage = () => {
               transition={{ duration: 0.8 }}
               className="rounded-[40px] overflow-hidden aspect-video bg-zinc-900 border border-white/5 group shadow-2xl shadow-orange-500/5"
             >
-              {/* Using your uploaded graffiti image */}
               <img 
                 src="/graffiti-2.jpg" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" 
+                /* MOBILE: grayscale-0 (Full Color). DESKTOP: md:grayscale, color on hover. */
+                className="w-full h-full object-cover transition-all duration-1000 grayscale-0 md:grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100" 
                 alt="Graffiti roots"
               />
             </motion.div>
@@ -80,13 +80,13 @@ const AboutPage = () => {
               transition={{ duration: 0.8 }}
               className="rounded-[40px] overflow-hidden aspect-square md:aspect-video bg-zinc-900 border border-white/5"
             >
-              {/* Using your uploaded anti-piracy video */}
               <video 
                 autoPlay 
                 loop 
                 muted 
                 playsInline 
-                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-700"
+                /* MOBILE: opacity-100. DESKTOP: md:opacity-80, brightens on hover. */
+                className="w-full h-full object-cover transition-opacity duration-700 opacity-100 md:opacity-80 hover:opacity-100" 
               >
                 <source src="/anti-piracy.mp4" type="video/mp4" />
               </video>

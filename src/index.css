@@ -1,4 +1,4 @@
-@import "tailwindcss"; /* Add this at the very top */
+@import "tailwindcss";
 
 @layer base {
   html, body, #root {
@@ -6,65 +6,74 @@
     padding: 0;
     width: 100%;
     background-color: black;
+    /* Hide default cursor on desktop */
+    @media (min-width: 768px) {
+      cursor: none !important;
+    }
+  }
+
+  /* Global pointer overrides to ensure native cursor stays hidden */
+  @media (min-width: 768px) {
+    a, button, [role="button"], .group, input, select {
+      cursor: none !important;
+    }
   }
 }
 
+/* --- 1. Infinite Marquee & Brand Animations --- */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .animate-spin-slow {
   animation: spin 3s linear infinite;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* --- 2. Hidden Brand Watermark Style --- */
+.bg-brand-text {
+  font-size: 35vw;
+  line-height: 0.8;
+  pointer-events: none;
+  user-select: none;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.03); /* Subtle 3% opacity */
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-body {
+/* --- 3. Scrollbar Removal (Universal) --- */
+* {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-body::-webkit-scrollbar {
-  display: none;
-}
 
-/* Add this to index.css if not already working */
-.overflow-hidden {
-  overflow: hidden !important;
-}
-
-/* Add this to your index.css */
-
-/* Hide scrollbar for Chrome, Safari and Opera */
 *::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-* {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+/* --- 4. Custom Cursor Magnetic Animation --- */
+@keyframes magnetic {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
 }
 
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+/* Replaced @apply with standard CSS to fix your error */
+.custom-cursor-active {
+  animation: magnetic 0.3s forwards;
+  opacity: 1;
+}
+
+/* --- 5. Utility Helpers --- */
+.overflow-hidden {
+  overflow: hidden !important;
 }
